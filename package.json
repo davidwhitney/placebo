@@ -1,0 +1,19 @@
+{
+  "name": "placebo",
+  "version": "1.0.0",
+  "description": "A Node Nancy clone.",
+  "main": "src/index.ts",
+  "dependencies": {
+    "jest-cli": "^26.0.1",
+    "typescript": "^4.0.5"
+  },
+  "devDependencies": {
+    "ts-node": "^9.0.0"
+  },
+  "scripts": {
+    "start": "ts-node example/index.ts",
+    "test": "test"
+  },
+  "author": "",
+  "license": "ISC"
+}
