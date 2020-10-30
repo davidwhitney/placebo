@@ -3,16 +3,18 @@ import http from 'http';
 import { DefaultModuleDiscoveryStrategy } from './DefaultModuleDiscoveryStrategy';
 import { DefaultRooter } from './DefaultRooter';
 import { ExecutionPipeline } from './ExecutionPipeline';
-import { IModuleDiscoveryStrategy, IRouteRequests } from './types';
+import { IModuleDiscoveryStrategy, IRouteRequests, ProcessContext } from './types';
 
 export class Bootstrapper {
 
+    private _processContext: ProcessContext;
     private _registered: boolean;
     private _moduleDiscovery: IModuleDiscoveryStrategy;
     private _router: IRouteRequests;
 
-    constructor() {
-        this._moduleDiscovery = new DefaultModuleDiscoveryStrategy();
+    constructor(root: string) {
+        this._processContext = { root: root };
+        this._moduleDiscovery = new DefaultModuleDiscoveryStrategy(this._processContext);
     }
 
     public async registerModules() {
@@ -22,7 +24,7 @@ export class Bootstrapper {
     }
 
     public async handle(req: http.IncomingMessage, res: http.ServerResponse) {
-        const pipeline = new ExecutionPipeline(this._router);
+        const pipeline = new ExecutionPipeline(this._router, this._processContext);
         await pipeline.handle(req, res);
     }
 
@@ -39,5 +41,3 @@ export class Bootstrapper {
         server.listen(port);
     }
 }
-
-

@@ -16,3 +16,7 @@ interface ModuleDefinition {
     name: string;
     path: string;
 }
+
+interface ProcessContext {
+    root: string;
+}
