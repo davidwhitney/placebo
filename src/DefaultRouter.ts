@@ -1,7 +1,7 @@
 import http from 'http';
 import { ModuleDefinition } from './types';
 
-export class DefaultRooter {
+export class DefaultRouter {
 
     private _modules: ModuleDefinition[];
 
@@ -10,6 +10,9 @@ export class DefaultRooter {
     }
 
     public async route(req: http.IncomingMessage): Promise<ModuleDefinition> {
+
+        console.log(req);
+
         return this._modules[0];
     }
 }

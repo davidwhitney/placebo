@@ -1,5 +1,6 @@
 import http from 'http';
 import path from 'path';
+import { Activator } from "./Activator";
 import { IModule, IRouteRequests, ProcessContext } from './types';
 
 export class ExecutionPipeline {
@@ -17,18 +18,13 @@ export class ExecutionPipeline {
             const handlingModule = await this._router.route(req);
 
             const absolutePath = path.join(this._context.root, handlingModule.path);
-            const module = require(absolutePath);
-
-            const exports = Object.getOwnPropertyNames(module);
-            const exportName = exports[1];
-            const ctor = module[exportName];
-
-            const instance = new ctor() as IModule;
+            const instance = Activator.createInstance<IModule>(absolutePath);
 
             const result = instance.execute(req, res);
 
             if (result) {
-                // Do content type negotiation and write to res stream.
+                // Do content type negotiation and write to res stream.                
+
             }
 
         } catch (ex) {
@@ -36,3 +32,6 @@ export class ExecutionPipeline {
         }
     }
 }
+
+
+

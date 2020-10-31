@@ -3,8 +3,10 @@ import { IModule } from "../src/types";
 
 export class HomeModule implements IModule {
 
+    public route = "/";
+
     async execute(req: IncomingMessage, res?: ServerResponse): Promise<any> {
-        res.write('Hello World!'); //write a response to the client
+        res.write('Hello World!');
     }
 
 }

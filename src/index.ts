@@ -1,7 +1,7 @@
 import http from 'http';
 
 import { DefaultModuleDiscoveryStrategy } from './DefaultModuleDiscoveryStrategy';
-import { DefaultRooter } from './DefaultRooter';
+import { DefaultRouter } from './DefaultRouter';
 import { ExecutionPipeline } from './ExecutionPipeline';
 import { IModuleDiscoveryStrategy, IRouteRequests, ProcessContext } from './types';
 
@@ -19,7 +19,7 @@ export class Bootstrapper {
 
     public async registerModules() {
         const knownModules = await this._moduleDiscovery.discover();
-        this._router = new DefaultRooter(knownModules);
+        this._router = new DefaultRouter(knownModules);
         this._registered = true;
     }
 

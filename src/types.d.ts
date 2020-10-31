@@ -9,12 +9,14 @@ interface IRouteRequests {
 }
 
 interface IModule {
+    route: string;
     execute(req: http.IncomingMessage, res?: http.ServerResponse): Promise<any> | void;
 }
 
 interface ModuleDefinition {
     name: string;
     path: string;
+    route: string;
 }
 
 interface ProcessContext {
