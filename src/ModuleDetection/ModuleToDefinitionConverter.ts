@@ -11,9 +11,9 @@ export class ModuleToDefinitionConverter {
         const modulePath = f.replace(".ts", "").replace(".js", "");
 
         const absolutePath = path.join(context.root, modulePath);
-        const instance = Activator.createInstance<IModule>(absolutePath);
+        const instance = Activator.tryCreateInstance<IModule>(absolutePath);
 
-        const route = instance.route ?? modulePath.replace("\\", "/").replace("Module", "");
+        const route = instance?.route ?? modulePath.replace("\\", "/").replace("Module", "");
 
         return {
             name,

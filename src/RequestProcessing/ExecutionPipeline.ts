@@ -1,8 +1,8 @@
 import http from 'http';
 import path from 'path';
-import { Activator } from "./Activator";
-import { EntryPoint, IModule, IRouteRequests, ProcessContext } from './types';
-import { isDeleteModule, isGetModule, isOptionsModule, isPostModule, isPutModule } from './types.guards';
+import { Activator } from "../Activator";
+import { EntryPoint, IModule, IRouteRequests, ProcessContext } from '../types';
+import { isDeleteModule, isGetModule, isOptionsModule, isPostModule, isPutModule } from '../types.guards';
 
 export class ExecutionPipeline {
 

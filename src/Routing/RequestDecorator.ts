@@ -7,7 +7,7 @@ export class RequestDecorator {
         this.req = req;
     }
 
-    public get isForRoot() {
+    public get isForRoot(): boolean {
         return this.req.url === "/";
     }
 }

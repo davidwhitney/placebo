@@ -2,7 +2,7 @@ import http from 'http';
 
 import { DefaultModuleDiscoveryStrategy } from './ModuleDetection/DefaultModuleDiscoveryStrategy';
 import { DefaultRouter } from './Routing/DefaultRouter';
-import { ExecutionPipeline } from './ExecutionPipeline';
+import { ExecutionPipeline } from './RequestProcessing/ExecutionPipeline';
 import { IModuleDiscoveryStrategy, IRouteRequests, ProcessContext } from './types';
 
 export class Bootstrapper {

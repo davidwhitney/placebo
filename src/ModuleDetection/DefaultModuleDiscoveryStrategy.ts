@@ -21,7 +21,7 @@ export class DefaultModuleDiscoveryStrategy implements IModuleDiscoveryStrategy 
         return asModuleDefinition;
     }
 
-    private recursiveGetFiles(dir: string, fileTypes: string | string[]) {
+    private recursiveGetFiles(dir: string, fileTypes: string | string[]): string[] {
         var filesToReturn = [];
 
         const walkDir = (currentPath) => {

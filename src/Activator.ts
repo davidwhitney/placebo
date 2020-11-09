@@ -1,4 +1,13 @@
 export class Activator {
+
+    public static tryCreateInstance<T>(path: string) {
+        try {
+            return this.createInstance<T>(path);
+        } catch {
+            return null;
+        }
+    }
+
     public static createInstance<T>(path: string) {
         const module = require(path);
 
