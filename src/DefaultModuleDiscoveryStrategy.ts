@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import { Activator } from "./Activator";
-import { IModule, IModuleDiscoveryStrategy, ModuleDefinition, ProcessContext } from './types';
+import { ModuleToDefinitionConverter } from './ModuleToDefinitionConverter';
+import { IModuleDiscoveryStrategy, ModuleDefinition, ProcessContext } from './types';
 
 export class DefaultModuleDiscoveryStrategy implements IModuleDiscoveryStrategy {
 
@@ -14,18 +14,7 @@ export class DefaultModuleDiscoveryStrategy implements IModuleDiscoveryStrategy 
     async discover(): Promise<ModuleDefinition[]> {
         const files = this.recursiveGetFiles(this._context.root, [".js", ".ts"]);
         const modules = files.filter(x => x.endsWith("Module.ts") || x.endsWith("Module.js"));
-
-        const asModuleDefinition = modules.map(f => {
-
-            const name = f.replace("Module.ts", "").replace("Module.js", "");
-            const modulePath = f.replace(".ts", "").replace(".js", "");
-
-            const absolutePath = path.join(this._context.root, modulePath);
-            const instance = Activator.createInstance<IModule>(absolutePath);
-            const route = instance.route;
-
-            return { name, path: modulePath, route }
-        });
+        const asModuleDefinition = modules.map(f => { return ModuleToDefinitionConverter.convert(f, this._context); });
 
         console.log("Routes", asModuleDefinition);
 
@@ -54,3 +43,5 @@ export class DefaultModuleDiscoveryStrategy implements IModuleDiscoveryStrategy 
         return filesToReturn;
     }
 }
+
+
