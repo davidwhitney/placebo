@@ -14,30 +14,32 @@ export class ExecutionPipeline {
         this._context = context;
     }
 
-    public async handle(req: http.IncomingMessage, res: http.ServerResponse) {
-
-        console.log("Request", req.url, req.method);
-
+    public async tryHandle(req: http.IncomingMessage, res: http.ServerResponse) {
         try {
-            const handlingModule = await this._router.route(req);
-            if (handlingModule == null) {
-                return this.notFound(req, res);
-            }
-
-            const absolutePath = path.join(this._context.root, handlingModule.path);
-
-            const instance = Activator.createInstance<IModule>(absolutePath);
-            const entryPoint = this.selectEntrypoint(instance, req);
-
-            const result = entryPoint(req, res);
-
-            if (result) {
-                // Do content type negotiation and write to res stream.                
-
-            }
-
+            await this.handle(req, res);
         } catch (ex) {
             console.log(ex);
+            // Real error handling hooks here.
+        }
+    }
+
+    private async handle(req: http.IncomingMessage, res: http.ServerResponse) {
+        console.log("Request", req.url, req.method);
+
+        const handlingModule = await this._router.route(req);
+        if (handlingModule == null) {
+            return this.notFound(req, res);
+        }
+
+        const absolutePath = path.join(this._context.root, handlingModule.path);
+
+        const instance = Activator.createInstance<IModule>(absolutePath);
+        const entryPoint = this.selectEntrypoint(instance, req);
+
+        const result = entryPoint(req, res);
+
+        if (result) {
+            // Do content type negotiation and write to res stream.
         }
     }
 

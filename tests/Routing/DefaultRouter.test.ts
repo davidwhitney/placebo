@@ -1,12 +1,12 @@
 import http from 'http';
-import { DefaultRouter } from "../src/DefaultRouter";
+import { DefaultRouter } from "../../src/Routing/DefaultRouter";
 
 describe("DefaultRouter", () => {
 
     let sut: DefaultRouter;
     beforeEach(() => {
         sut = new DefaultRouter([
-            { name: "Home", path: "HomeModule", route: "/" },
+            { name: "Home", path: "HomeModule", route: "/Home" },
             { name: "Foo", path: "FooModule", route: "/foo" },
         ]);
     })
@@ -24,7 +24,7 @@ describe("DefaultRouter", () => {
 
         const result = await sut.route(request);
 
-        expect(result.name).toBe("FourZeroFour");
+        expect(result).toBeNull();
     });
 
     it("route, request for none-home url, correct module returned", async () => {
@@ -36,7 +36,7 @@ describe("DefaultRouter", () => {
     });
 
     it("route, request is for default, supports DefaultModule", async () => {
-        sut = new DefaultRouter([{ name: "Default", path: "DefaultModule", route: "/" }]);
+        sut = new DefaultRouter([{ name: "Default", path: "DefaultModule", route: "/Default" }]);
         const request = { url: "/" } as http.IncomingMessage;
 
         const result = await sut.route(request);
@@ -45,7 +45,7 @@ describe("DefaultRouter", () => {
     });
 
     it("route, request is for default, supports HomeModule", async () => {
-        sut = new DefaultRouter([{ name: "Home", path: "HomeModule", route: "/" }]);
+        sut = new DefaultRouter([{ name: "Home", path: "HomeModule", route: "/Home" }]);
         const request = { url: "/" } as http.IncomingMessage;
 
         const result = await sut.route(request);
@@ -54,7 +54,7 @@ describe("DefaultRouter", () => {
     });
 
     it("route, request is for default, supports IndexModule", async () => {
-        sut = new DefaultRouter([{ name: "Index", path: "IndexModule", route: "/" }]);
+        sut = new DefaultRouter([{ name: "Index", path: "IndexModule", route: "/Index" }]);
         const request = { url: "/" } as http.IncomingMessage;
 
         const result = await sut.route(request);

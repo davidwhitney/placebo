@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { ModuleToDefinitionConverter } from './ModuleToDefinitionConverter';
-import { IModuleDiscoveryStrategy, ModuleDefinition, ProcessContext } from './types';
+import { IModuleDiscoveryStrategy, ModuleDefinition, ProcessContext } from '../types';
 
 export class DefaultModuleDiscoveryStrategy implements IModuleDiscoveryStrategy {
 

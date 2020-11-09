@@ -1,6 +1,6 @@
 import path from 'path';
-import { Activator } from "./Activator";
-import { IModule, ModuleDefinition, ProcessContext } from './types';
+import { Activator } from "../Activator";
+import { IModule, ModuleDefinition, ProcessContext } from '../types';
 
 export class ModuleToDefinitionConverter {
 
@@ -21,5 +21,4 @@ export class ModuleToDefinitionConverter {
             route
         };
     }
-
 }

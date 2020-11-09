@@ -1,27 +1,7 @@
-import http from 'http';
-import { ModuleDefinition } from './types';
+import { ModuleDefinition } from '../types';
 
-export class DefaultRouter {
 
-    private _modules: ModuleDefinitionCollection;
-
-    constructor(modules: ModuleDefinition[]) {
-        this._modules = new ModuleDefinitionCollection(modules);
-    }
-
-    public async route(req: http.IncomingMessage): Promise<ModuleDefinition | null> {
-        const request = new RequestDecorator(req);
-
-        const matchingModules = this._modules.matching(req.url, req.method);
-        if (matchingModules.length === 0) {
-            return null;
-        }
-
-        return matchingModules[0];
-    }
-}
-
-class ModuleDefinitionCollection {
+export class ModuleDefinitionCollection {
     private _modules: ModuleDefinition[];
 
     constructor(modules: ModuleDefinition[]) {
@@ -50,17 +30,5 @@ class ModuleDefinitionCollection {
 
     private isDefaultModule(name: string): boolean {
         return ["home", "index", "default"].indexOf(name.toLowerCase()) > -1;
-    }
-}
-
-class RequestDecorator {
-    public readonly req: http.IncomingMessage;
-
-    constructor(req: http.IncomingMessage) {
-        this.req = req;
-    }
-
-    public get isForRoot() {
-        return this.req.url === "/";
     }
 }

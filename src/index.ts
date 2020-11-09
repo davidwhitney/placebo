@@ -1,7 +1,7 @@
 import http from 'http';
 
-import { DefaultModuleDiscoveryStrategy } from './DefaultModuleDiscoveryStrategy';
-import { DefaultRouter } from './DefaultRouter';
+import { DefaultModuleDiscoveryStrategy } from './ModuleDetection/DefaultModuleDiscoveryStrategy';
+import { DefaultRouter } from './Routing/DefaultRouter';
 import { ExecutionPipeline } from './ExecutionPipeline';
 import { IModuleDiscoveryStrategy, IRouteRequests, ProcessContext } from './types';
 
@@ -25,7 +25,7 @@ export class Bootstrapper {
 
     public async handle(req: http.IncomingMessage, res: http.ServerResponse) {
         const pipeline = new ExecutionPipeline(this._router, this._processContext);
-        await pipeline.handle(req, res);
+        await pipeline.tryHandle(req, res);
     }
 
     public listen(port: number) {
