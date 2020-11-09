@@ -4,6 +4,7 @@ import { DefaultModuleDiscoveryStrategy } from './ModuleDetection/DefaultModuleD
 import { DefaultRouter } from './Routing/DefaultRouter';
 import { ExecutionPipeline } from './RequestProcessing/ExecutionPipeline';
 import { IModuleDiscoveryStrategy, IRouteRequests, ProcessContext } from './types';
+import { SupportedFormatters } from "./ContentNegotiation/SupportedFormatters";
 
 export class Bootstrapper {
 
@@ -11,10 +12,12 @@ export class Bootstrapper {
     private _registered: boolean;
     private _moduleDiscovery: IModuleDiscoveryStrategy;
     private _router: IRouteRequests;
+    private _supportedFormatters: SupportedFormatters;
 
     constructor(root: string) {
         this._processContext = { root: root };
         this._moduleDiscovery = new DefaultModuleDiscoveryStrategy(this._processContext);
+        this._supportedFormatters = SupportedFormatters.default;
     }
 
     public async registerModules() {
@@ -24,7 +27,7 @@ export class Bootstrapper {
     }
 
     public async handle(req: http.IncomingMessage, res: http.ServerResponse) {
-        const pipeline = new ExecutionPipeline(this._router, this._processContext);
+        const pipeline = new ExecutionPipeline(this._router, this._processContext, this._supportedFormatters);
         await pipeline.tryHandle(req, res);
     }
 

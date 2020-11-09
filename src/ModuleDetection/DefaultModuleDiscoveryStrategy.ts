@@ -14,7 +14,10 @@ export class DefaultModuleDiscoveryStrategy implements IModuleDiscoveryStrategy 
     async discover(): Promise<ModuleDefinition[]> {
         const files = this.recursiveGetFiles(this._context.root, [".js", ".ts"]);
         const modules = files.filter(x => x.endsWith("Module.ts") || x.endsWith("Module.js"));
-        const asModuleDefinition = modules.map(f => { return ModuleToDefinitionConverter.convert(f, this._context); });
+
+        const asModuleDefinition = modules.map(f => {
+            return ModuleToDefinitionConverter.convert(f, this._context);
+        });
 
         console.log("Routes", asModuleDefinition);
 
@@ -24,7 +27,7 @@ export class DefaultModuleDiscoveryStrategy implements IModuleDiscoveryStrategy 
     private recursiveGetFiles(dir: string, fileTypes: string | string[]): string[] {
         var filesToReturn = [];
 
-        const walkDir = (currentPath) => {
+        const walkDir = (currentPath: string) => {
             var files = fs.readdirSync(currentPath);
 
             for (var i in files) {

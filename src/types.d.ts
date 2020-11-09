@@ -13,33 +13,33 @@ type EntryPoint = (req: http.IncomingMessage, res?: http.ServerResponse) => Prom
 interface IModule {
     route?: string;
 
-    execute?(req: http.IncomingMessage, res?: http.ServerResponse): Promise<any> | void;
+    execute?: EntryPoint;
 
-    get?(req: http.IncomingMessage, res?: http.ServerResponse): Promise<any> | void;
-    post?(req: http.IncomingMessage, res?: http.ServerResponse): Promise<any> | void;
-    put?(req: http.IncomingMessage, res?: http.ServerResponse): Promise<any> | void;
-    delete?(req: http.IncomingMessage, res?: http.ServerResponse): Promise<any> | void;
-    options?(req: http.IncomingMessage, res?: http.ServerResponse): Promise<any> | void;
+    get?: EntryPoint;
+    post?: EntryPoint;
+    put?: EntryPoint;
+    delete?: EntryPoint;
+    options?: EntryPoint;
 }
 
 interface IGetModule {
-    get(req: http.IncomingMessage, res?: http.ServerResponse): Promise<any> | void;
+    get: EntryPoint;
 }
 
 interface IPostModule {
-    post(req: http.IncomingMessage, res?: http.ServerResponse): Promise<any> | void;
+    post: EntryPoint;
 }
 
 interface IPutModule {
-    put(req: http.IncomingMessage, res?: http.ServerResponse): Promise<any> | void;
+    put: EntryPoint;
 }
 
 interface IDeleteModule {
-    delete(req: http.IncomingMessage, res?: http.ServerResponse): Promise<any> | void;
+    delete: EntryPoint;
 }
 
 interface IOptionsModule {
-    options(req: http.IncomingMessage, res?: http.ServerResponse): Promise<any> | void;
+    options: EntryPoint;
 }
 
 interface ModuleDefinition {

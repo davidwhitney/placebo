@@ -6,6 +6,6 @@ export class HomeModule implements IModule {
     public route = "/";
 
     async get(req: IncomingMessage, res?: ServerResponse): Promise<any> {
-        res.write('Hello World!');
+        return { hello: "world" };
     }
 }
