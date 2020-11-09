@@ -20,11 +20,15 @@ export class ExecutionPipeline {
 
         try {
             const handlingModule = await this._router.route(req);
+            if (handlingModule == null) {
+                return this.notFound(req, res);
+            }
 
             const absolutePath = path.join(this._context.root, handlingModule.path);
-            const instance = Activator.createInstance<IModule>(absolutePath);
 
+            const instance = Activator.createInstance<IModule>(absolutePath);
             const entryPoint = this.selectEntrypoint(instance, req);
+
             const result = entryPoint(req, res);
 
             if (result) {
@@ -60,5 +64,9 @@ export class ExecutionPipeline {
         }
 
         return instance.execute;
+    }
+
+    private notFound(req: http.IncomingMessage, res: http.ServerResponse) {
+        res.statusCode = 404;
     }
 }

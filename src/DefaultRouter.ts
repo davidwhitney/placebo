@@ -9,15 +9,12 @@ export class DefaultRouter {
         this._modules = new ModuleDefinitionCollection(modules);
     }
 
-    public async route(req: http.IncomingMessage): Promise<ModuleDefinition> {
+    public async route(req: http.IncomingMessage): Promise<ModuleDefinition | null> {
         const request = new RequestDecorator(req);
 
         const matchingModules = this._modules.matching(req.url, req.method);
-
         if (matchingModules.length === 0) {
-
-            return { name: "FourZeroFour", path: req.url, route: req.url };
-
+            return null;
         }
 
         return matchingModules[0];
