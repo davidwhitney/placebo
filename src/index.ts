@@ -2,9 +2,11 @@ import http from 'http';
 
 import { DefaultModuleDiscoveryStrategy } from './ModuleDetection/DefaultModuleDiscoveryStrategy';
 import { DefaultRouter } from './Routing/DefaultRouter';
-import { ExecutionPipeline } from './RequestProcessing/ExecutionPipeline';
+import { ModuleExecutionComponent } from './RequestProcessing/ModuleExecutionComponent';
 import { IModuleDiscoveryStrategy, IRouteRequests, ProcessContext } from './types';
 import { SupportedFormatters } from "./ContentNegotiation/SupportedFormatters";
+import { ExecutionPipeline } from './RequestProcessing/ExecutionPipeline';
+import { StaticFileComponent } from './RequestProcessing/StaticFileComponent';
 
 export class Bootstrapper {
 
@@ -13,11 +15,15 @@ export class Bootstrapper {
     private _moduleDiscovery: IModuleDiscoveryStrategy;
     private _router: IRouteRequests;
     private _supportedFormatters: SupportedFormatters;
+    private _executionPipeline: ExecutionPipeline;
 
     constructor(root: string) {
         this._processContext = { root: root };
         this._moduleDiscovery = new DefaultModuleDiscoveryStrategy(this._processContext);
         this._supportedFormatters = SupportedFormatters.default;
+        this._executionPipeline = new ExecutionPipeline([
+            new ModuleExecutionComponent()
+        ]);
     }
 
     public async registerModules() {
@@ -26,15 +32,33 @@ export class Bootstrapper {
         this._registered = true;
     }
 
+    public async registerStatic(fileSystemLocation: string, virtualPath: string) {
+        const staticFileHandlingComponent = new StaticFileComponent(fileSystemLocation, virtualPath);
+        this._executionPipeline.components.unshift(staticFileHandlingComponent)
+    }
+
     public async handle(req: http.IncomingMessage, res: http.ServerResponse) {
-        const pipeline = new ExecutionPipeline(this._router, this._processContext, this._supportedFormatters);
-        await pipeline.tryHandle(req, res);
+
+        const requestContext = {
+            router: this._router,
+            processContext: this._processContext,
+            formatters: this._supportedFormatters
+        };
+
+        const result = await this._executionPipeline.tryExecute(req, res, requestContext);
+
+        // Evaluate result in some way here.
+        // Trigger error handling, etc etc
     }
 
     public listen(port: number) {
         if (!this._registered) {
             throw Error("Please run registerModules before starting listening.");
         }
+
+        console.log("Starting server...")
+        console.log("Pipeline", this._executionPipeline.components);
+        console.log("Modules", this._router.modules);
 
         const server = http.createServer(async (req, res) => {
             await this.handle(req, res);
@@ -44,3 +68,5 @@ export class Bootstrapper {
         server.listen(port);
     }
 }
+
+

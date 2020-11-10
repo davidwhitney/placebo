@@ -19,8 +19,6 @@ export class DefaultModuleDiscoveryStrategy implements IModuleDiscoveryStrategy 
             return ModuleToDefinitionConverter.convert(f, this._context);
         });
 
-        console.log("Routes", asModuleDefinition);
-
         return asModuleDefinition;
     }
 
