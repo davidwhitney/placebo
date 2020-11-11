@@ -12,10 +12,12 @@
     "@babel/core": "^7.12.3",
     "@babel/preset-env": "^7.12.1",
     "@types/jest": "^26.0.15",
+    "nodemon": "^2.0.6",
     "ts-node": "^9.0.0"
   },
   "scripts": {
     "start": "ts-node example/index.ts",
+    "dev": "nodemon --watch \"example/**\" --watch \"src/**\" --ext \"ts,js,json\" --exec \"ts-node example/index.ts\"",
     "test": "test"
   },
   "author": "",

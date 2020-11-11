@@ -56,7 +56,7 @@ export class Bootstrapper {
             throw Error("Please run registerModules before starting listening.");
         }
 
-        console.log("Starting server...")
+        console.log("Starting")
         console.log("Pipeline", this._executionPipeline.components);
         console.log("Modules", this._router.modules);
 
