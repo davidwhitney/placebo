@@ -1,4 +1,10 @@
+import { ActionResult } from "./Results/ActionResults";
 import { IDeleteModule, IGetModule, IModule, IOptionsModule, IPostModule, IPutModule } from "./types";
+
+export function isActionResult(module: any | ActionResult): module is ActionResult {
+    if (!module) { return false; }
+    return (module as ActionResult).executeResultAsync !== undefined;
+}
 
 export function isGetModule(module: IModule | IGetModule): module is IModule {
     return (module as IGetModule).get !== undefined;

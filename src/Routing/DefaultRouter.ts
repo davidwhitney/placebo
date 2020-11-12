@@ -14,6 +14,8 @@ export class DefaultRouter {
     public async route(req: http.IncomingMessage): Promise<ModuleDefinition | null> {
         const request = new RequestDecorator(req);
 
+        console.log("Routing", req.url, req.method);
+
         const matchingModules = this.modules.matching(req.url, req.method);
         const noMatchingModules = matchingModules.length === 0;
 

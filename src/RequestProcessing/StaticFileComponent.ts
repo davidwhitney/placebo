@@ -21,16 +21,18 @@ export class StaticFileComponent implements IPipelineComponent {
         const localPathWithoutVirtualPart = req.url.replace(this._virtualPath, "");
         const possiblePhysicalLocation = path.join(ctx.processContext.root, this._fsLocation, localPathWithoutVirtualPart);
 
-        const exits = fs.existsSync(possiblePhysicalLocation);
-        const isDir = fs.lstatSync(possiblePhysicalLocation).isDirectory();
-
-        if (exits && !isDir) {
-            // Also write Content-Type headers.
-
-            res.write(fs.readFileSync(possiblePhysicalLocation));
-            return false; // Stop processing
+        const exists = fs.existsSync(possiblePhysicalLocation);
+        if (!exists) {
+            return true;
         }
 
-        return true;
+        const isDir = fs.lstatSync(possiblePhysicalLocation).isDirectory();
+        if (isDir) {
+            return true;
+        }
+
+        // Also write Content-Type headers.
+        res.write(fs.readFileSync(possiblePhysicalLocation));
+        return false; // Stop processing
     }
 }

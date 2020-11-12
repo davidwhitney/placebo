@@ -40,6 +40,8 @@ export class Bootstrapper {
     public async handle(req: http.IncomingMessage, res: http.ServerResponse) {
 
         const requestContext = {
+            req,
+            res,
             router: this._router,
             processContext: this._processContext,
             formatters: this._supportedFormatters

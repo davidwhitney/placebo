@@ -20,6 +20,8 @@ interface IPipelineComponent {
 }
 
 interface RequestContext {
+    req: http.IncomingMessage;
+    res: http.ServerResponse;
     router: IRouteRequests;
     processContext: ProcessContext;
     formatters: SupportedFormatters

@@ -29,6 +29,7 @@ export class ModuleDefinitionCollection {
     }
 
     private isDefaultModule(name: string): boolean {
-        return ["home", "index", "default"].indexOf(name.toLowerCase()) > -1;
+        const normalisedName = name.replace("\\", "").replace("/", "/").toLowerCase();
+        return ["home", "index", "default"].includes(normalisedName);
     }
 }
